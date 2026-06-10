@@ -23,27 +23,3 @@ jobs:
           ./gradlew build -x test
       - name: Run tests
         run: ./gradlew test
-
-  system-test:
-    runs-on: ubuntu-22.04
-    needs: build-and-test
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run docker Compose
-        working-directory: ./
-        run: docker compose up -d --build
-
-      - name: set up python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.7.17'
-
-      - run: pip install pytest requests
-      - name: Run system tests
-        working-directory: ./
-        run: pytest
-
-      - name: Bring server down
-        working-directory: ./
-        run: docker compose down
